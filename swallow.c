@@ -15,16 +15,23 @@ int main(int argc, char** argv) {
 
     char *command;
     int maxsize, i;
-    for(maxsize=0,i=1; argv[i] ; i++) {
+    for(maxsize=0,i=1; argv[i]; i++) {
       maxsize += strlen(argv[i]);
     }
 
-    command = (char*)malloc(maxsize+1);
+    command = (char*)malloc(maxsize);
+    char *c = command;
 
-    for (int i = 1; i < argc; i++) {
-        strcat(command, argv[i]);
-        *((command+strlen(argv[i]))+1) = ' ';
+    for (int i = 1; argv[i]; i++) {
+      for(int j=0; argv[i][j]; j++) {
+        *command=argv[i][j];
+        command++;
+      }
+     *command = ' ';
+     command++;
     }
+    command = c;
+    printf("%s", command);
 
     // open current display
     int rev;
