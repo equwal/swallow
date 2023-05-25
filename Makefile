@@ -1,5 +1,6 @@
-.POSIX
-CC ?= gcc
+.POSIX:
+
+CC?=cc
 CPPFLAGS=-lX11 -Wall -Wextra -fPIE -O2 -D_FORTIFY_SOURCE=2
 SOURCE=swallow.c
 TARGET=swallow
