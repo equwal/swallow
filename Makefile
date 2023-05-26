@@ -11,7 +11,7 @@ PREFIX=/usr/local
 build: $(TARGET)
 
 install: build
-	cp $(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
+	install -D $(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(TARGET)
