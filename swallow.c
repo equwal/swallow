@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
      *(command++) = ' ';
     }
     command = c;
-    printf("%s", command);
 
     // open current display
     int rev;
@@ -55,6 +54,8 @@ int main(int argc, char** argv) {
 
     // launch the application
     int res = system(command);
+
+    free(command);
 
     if (res) {
         printf("Application exited with %i\n", res);
