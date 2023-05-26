@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void usage(void);
+int main(int,char**);
+
 void usage() {
     printf("swallow app_name [arguments]\n");
 }
