@@ -9,7 +9,7 @@ void usage() {
 int main(int argc, char** argv) {
     if (argc <= 1) {
         usage();
-        return 0;
+        return 1;
     }
 
     char *command;
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 
     if (!dis) {
         printf("Failed to open display!\n");
-        return 0;
+        return 1;
     }
 
     /*
