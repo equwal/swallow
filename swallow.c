@@ -1,39 +1,24 @@
 #include <X11/Xlib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <spawn.h>
+#include <sys/wait.h>
+
+extern char **environ;
 
 void usage(void);
 int main(int,char**);
 
 void usage() {
-    printf("swallow app_name [arguments]\n");
+    fputs("swallow app_name [arguments]\n", stderr);
+    exit(1);
 }
 
 int main(int argc, char** argv) {
-    if (argc <= 1) {
+    if (argc <= 1)
         usage();
-        return 1;
-    }
-
-    char *command;
-    int maxsize,i,j;
-
-    for(maxsize=0,i=1; argv[i]; i++)
-      for(j=0; argv[i][j];j++)
-        maxsize++;
-
-    command = (char*)malloc(maxsize);
-    char *c = command;
-
-    for (int i = 1; argv[i]; i++) {
-      for(int j=0; argv[i][j]; j++)
-        *(command++) = argv[i][j];
-     *(command++) = ' ';
-    }
-    command = c;
 
     // open current display
-    int rev;
     Window win;
     Display* dis = XOpenDisplay(0);
 
@@ -48,17 +33,21 @@ int main(int argc, char** argv) {
      */
 
     // hide the focused window
-    XGetInputFocus(dis, &win, &rev);
+    XGetInputFocus(dis, &win, &(int){ 0 });
     XUnmapWindow(dis, win);
     XFlush(dis);
 
     // launch the application
-    int res = system(command);
+    pid_t child;
+    int res = 0;
+    if (!posix_spawnp(&child, argv[1], NULL, NULL, argv + 1, environ))
+        waitpid(child, &res, 0);
 
-    free(command);
-
-    if (res) {
-        printf("Application exited with %i\n", res);
+    if (WIFEXITED(res)) {
+        if (WEXITSTATUS(res))
+            printf("Application exited with %d\n", WEXITSTATUS(res));
+    } else if (WIFSIGNALED(res)) {
+        printf("Allication died with signal %d\n", WTERMSIG(res));
     }
 
     // the application exited
@@ -66,5 +55,5 @@ int main(int argc, char** argv) {
     XMapWindow(dis, win);
     XCloseDisplay(dis);
 
+    return 0;
 }
-
