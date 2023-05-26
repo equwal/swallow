@@ -1,14 +1,14 @@
 .POSIX:
 
-CC?=cc
-CPPFLAGS=-lX11 -Wall -Wextra -fPIE -O2 -D_FORTIFY_SOURCE=2
-SOURCE=swallow.c
+CC=cc
+CPPFLAGS=-Wall -Wextra -fPIE -O2 -D_FORTIFY_SOURCE=2
+LDLIBS=-lX11
+
 TARGET=swallow
 
 PREFIX=/usr/local
 
 build: $(TARGET)
-	$(CC) $(CPPFLAGS) $(SOURCE) -o $(TARGET)
 
 install: build
 	cp $(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
