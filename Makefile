@@ -10,10 +10,10 @@ build: $(TARGET)
 	$(CC) $(CPPFLAGS) $(SOURCE) -o $(TARGET)
 
 install: build
-	cp $(TARGET) $(PREFIX)$(TARGET)
+	cp $(TARGET) $(DESTDIR)$(PREFIX)$(TARGET)
 
 uninstall:
-	rm -f $(PREFIX)$(TARGET)
+	rm -f $(DESTDIR)$(PREFIX)$(TARGET)
 
 clean:
 	rm -f $(TARGET)
